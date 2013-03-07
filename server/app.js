@@ -1,8 +1,8 @@
-var APP_DIR = __dirname + '/../app';
-var TEMPLATES_DIR = __dirname + '/templates';
+var APP_DIR = __dirname + '/../app',
+    TEMPLATES_DIR = __dirname + '/templates';
 
-var express = require('express');
-var app = express();
+var express = require('express'),
+    app = express();
 
 app.configure(function() {
   app.set('view engine', 'jade');
