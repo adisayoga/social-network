@@ -34,7 +34,7 @@ module.exports = function(config, mongose, nodemailer) {
 
     forgotPassword: function(email, resetPasswordUrl, callback) {
       this.Model.findOne({ email: email }, function(err, doc) {
-        if (err) return callback(false);
+        if (err || doc == null) return callback(false);
 
         resetPasswordUrl += '?account=' + doc._id;
         var message = {
