@@ -97,9 +97,10 @@ app.post('/reset-password', function(req, res) {
   var accountId = req.param('accountId', null);
   var password = req.param('password', null);
   if (accountId != null || password != null) {
-    account.changePassword(accountId, password);
+    account.changePassword(accountId, password, function(success) {
+      res.render(TEMPLATES_DIR + '/reset-password-success.jade');
+    });
   }
-  res.render(TEMPLATES_DIR + '/reset-password-success.jade');
 });
 
 app.get('/account/authenticate', function(req, res) {
