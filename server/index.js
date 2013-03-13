@@ -47,8 +47,13 @@ app.post('/register', function(req, res) {
       first:  firstName,
       last:   lastName
     }
+  }, function(success) {
+    if (success) {
+      res.send(200); // OK
+    } else {
+      res.send(500); // Internal Server Error
+    }
   });
-  res.send(200); // OK
 });
 
 app.post('/login', function(req, res) {
