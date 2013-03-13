@@ -11,6 +11,7 @@ function(IndexView, RegisterView, LoginView, ForgotPasswordView) {
     },
 
     changeView: function(view) {
+      console.log('#changeView');
       if (this.currentView != null) this.currentView.undelegateEvents();
       this.currentView = view;
       this.currentView.render();
@@ -24,12 +25,12 @@ function(IndexView, RegisterView, LoginView, ForgotPasswordView) {
       this.changeView(new LoginView());
     },
 
-    forgotPassword: function() {
-      this.changeView(new ForgotPasswordView());
-    },
-
     register: function() {
       this.changeView(new RegisterView());
+    },
+
+    forgotPassword: function() {
+      this.changeView(new ForgotPasswordView());
     }
 
   });

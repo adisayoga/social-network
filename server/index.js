@@ -97,7 +97,7 @@ app.post('/reset-password', function(req, res) {
   res.render(TEMPLATES_DIR + '/reset-password-success.jade');
 });
 
-app.get('/account/authenticated', function(req, res) {
+app.get('/account/authenticate', function(req, res) {
   if (req.session.loggedIn) {
     res.send(200); // OK
   } else {

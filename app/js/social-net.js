@@ -1,17 +1,13 @@
-define(['views/index'], function(IndexView) {
+define(['router'], function(router) {
   var initialize = function() {
     checkLogin(runApplication);
   };
 
   var checkLogin = function(callback) {
-    $.ajax('/account/authenticated', {
-      method: 'GET',
-      success: function() {
-        return callback(true);
-      },
-      error: function() {
-        return callback(false);
-      }
+    $.get('/account/authenticate', function() {
+      callback(true);
+    }).error(function() {
+      callback(false);
     });
   };
 
