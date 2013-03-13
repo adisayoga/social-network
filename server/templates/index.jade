@@ -1,10 +1,7 @@
-!!! 5
-html(lang="en")
-  head
-    title Social Network
-    script(data-main="js/boot", type="text/javascript", src="/libs/require.min.js")
+extends layout
 
-  body
-    h1 Social Network
+block content
+  div.content
 
-    div.content
+block scripts
+  script(data-main="js/boot", type="text/javascript", src="/libs/require.min.js")
