@@ -47,6 +47,7 @@ module.exports = function(config, mongose, nodemailer) {
         var smtpTransport = nodemailer.createTransport('SMTP', config.mail);
         smtpTransport.sendMail(message, function(err) {
           callback(!err);
+          console.log(err);
         });
       });
     },
