@@ -10,7 +10,7 @@ define(['text!templates/forgot-password.html'], function(forgotPasswordTemplate)
       var $el = this.$el;
 
       $.post('/forgot-password', {
-        email: $el.find('#forgot-password').val()
+        email: $el.find('#email').val()
       }, function(data) {
         console.log(data);
       });
