@@ -1,4 +1,6 @@
-define(['text!templates/register.html'], function(registerTemplate) {
+define(['text!templates/register.html'],
+
+function(registerTemplate) {
   return Backbone.View.extend({
     el: $('.content'),
 
@@ -7,17 +9,14 @@ define(['text!templates/register.html'], function(registerTemplate) {
     },
 
     register: function() {
-      var $el = this.$el;
-
       $.post('/register', {
-        firstName: $el.find('#first-name').val(),
-        lastName:  $el.find('#last-name').val(),
-        email:     $el.find('#email').val(),
-        password:  $el.find('#password').val()
+        firstName: $('#first-name').val(),
+        lastName:  $('#last-name').val(),
+        email:     $('#email').val(),
+        password:  $('#password').val()
       }, function(data) {
         console.log(data);
       });
-
       return false;
     },
 

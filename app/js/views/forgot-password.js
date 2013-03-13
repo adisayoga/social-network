@@ -1,4 +1,6 @@
-define(['text!templates/forgot-password.html'], function(forgotPasswordTemplate) {
+define(['text!templates/forgot-password.html'],
+
+function(forgotPasswordTemplate) {
   return Backbone.View.extend({
     el: $('.content'),
 
@@ -7,14 +9,11 @@ define(['text!templates/forgot-password.html'], function(forgotPasswordTemplate)
     },
 
     forgotPassword: function() {
-      var $el = this.$el;
-
       $.post('/forgot-password', {
-        email: $el.find('#email').val()
+        email: $('#email').val()
       }, function(data) {
         console.log(data);
       });
-
       return false;
     },
 

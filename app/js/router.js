@@ -1,4 +1,5 @@
 define(['views/index', 'views/register', 'views/login', 'views/forgot-password'],
+
 function(IndexView, RegisterView, LoginView, ForgotPasswordView) {
   var Workspace = Backbone.Router.extend({
     currentView: null,

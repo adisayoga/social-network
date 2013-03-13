@@ -12,8 +12,10 @@ var config = {
   mail: require('./config/mail')
 };
 
-// Import the accounts
-var account = require('./models/account')(config, mongose, nodemailer);
+// Import the models
+var models = {
+  account: require('./models/account')(config, mongose, nodemailer);
+}
 
 var app = express();
 
@@ -31,6 +33,49 @@ app.get('/', function(req, res) {
   res.render(TEMPLATES_DIR + '/index.jade', { layout: false });
 });
 
+app.get('/accounts/:id', function(req, res) {
+  var accountId = req.params.id == 'me' ? req.req.session.accountId : req.params.id;
+  models.account.findOne({ _id: accountId }, function(data) {
+    res.send(data);
+  });
+});
+
+app.get('/accounts/:id/status', function(req, res) {
+  var accountId = req.params.id == 'me' ? req.req.session.accountId : req.params.id;
+  models.account.findOne({ _id: accountId }, function(data) {
+    res.send(account.status);
+  });
+});
+
+app.post('/accounts/:id/status', function(req, res) {
+  var accountId = req.params.id == 'me' ? req.req.session.accountId : req.params.id;
+  models.account.findOne({ _id: accountId }, function(account) {
+    status = {
+      name: account.name,
+      status: req.param('status', '')
+    };
+    account.status.push(status);
+
+    // Push the status to all friends
+    account.activity.push(status);
+    account.save(function(err) {
+      if (err) console.log('Error saving account: ' + err);
+    });
+  });
+  res.send(200);
+});
+
+app.get('/account/:id/activity', function(req, res) {
+  var accountId = req.params.id == 'me' ? req.req.session.accountId : req.params.id;
+  models.account.findOne({ _id: accountId }, function(account) {
+    res.send(account.activity);
+  });
+});
+
+app.get('/account/authenticate', function(req, res) {
+  res.send(req.session.loggedIn ? 200 : 401) // OK/Unauthorized
+});
+
 app.post('/register', function(req, res) {
   var email     = req.param('email', null),
       password  = req.param('password', null),
@@ -40,7 +85,7 @@ app.post('/register', function(req, res) {
   if (email == null || email.length < 8 || password == null || password.length < 6)
     return res.send(400); // Bad request
 
-  account.register({
+  models.account.register({
     email:    email,
     password: password,
     name: {
@@ -48,11 +93,7 @@ app.post('/register', function(req, res) {
       last:   lastName
     }
   }, function(success) {
-    if (success) {
-      res.send(200); // OK
-    } else {
-      res.send(500); // Internal Server Error
-    }
+    res.send(success ? 200, 500); // OK/Internal Server Error
   });
 });
 
@@ -63,12 +104,8 @@ app.post('/login', function(req, res) {
   if (email == null || email.length < 8 || password == null || password.length < 6)
     return res.send(400); // Bad request
 
-  account.login(email, password, function(success) {
-    if (success) {
-      res.send(200); // OK
-    } else {
-      res.send(401); // Unauthorized
-    }
+  models.account.login(email, password, function(success) {
+    res.send(success ? 200, 401); // OK/Unauthorized
   });
 });
 
@@ -78,12 +115,8 @@ app.post('/forgot-password', function(req, res) {
   var email = req.param('email', null);
   if (email == null || email.length < 8) return res.send(400); // Bad request
 
-  account.forgotPassword(email, resetPasswordUrl, function(success) {
-    if (success) {
-      res.send(200); // OK
-    } else {
-      res.send(404); // Not found
-    }
+  models.account.forgotPassword(email, resetPasswordUrl, function(success) {
+    res.send(success ? 200, 500); // OK/Not found
   });
 });
 
@@ -97,17 +130,9 @@ app.post('/reset-password', function(req, res) {
   var accountId = req.param('accountId', null);
   var password = req.param('password', null);
   if (accountId != null || password != null) {
-    account.changePassword(accountId, password, function(success) {
+    models.account.changePassword(accountId, password, function(success) {
       res.render(TEMPLATES_DIR + '/reset-password-success.jade');
     });
-  }
-});
-
-app.get('/account/authenticate', function(req, res) {
-  if (req.session.loggedIn) {
-    res.send(200); // OK
-  } else {
-    res.send(401); // Unauthorized
   }
 });
 

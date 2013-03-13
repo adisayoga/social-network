@@ -1,4 +1,6 @@
-define(['text!templates/login.html'], function(loginTemplate) {
+define(['text!templates/login.html'],
+
+function(loginTemplate) {
   return Backbone.View.extend({
     el: $('.content'),
 
@@ -8,8 +10,6 @@ define(['text!templates/login.html'], function(loginTemplate) {
     },
 
     login: function() {
-      var $el = this.$el;
-
       $.post('/login', {
         email:    $el.find('#email').val(),
         password: $el.find('#password').val()
@@ -18,17 +18,16 @@ define(['text!templates/login.html'], function(loginTemplate) {
       }).error(function() {
         $el.find('#login-error').text('Unable to login.').slideDown();
       });
-
       return false;
     },
 
     resetError: function() {
-      this.$el.find('#login-error').slideUp();
+      $('#login-error').slideUp();
     },
 
     render: function() {
       this.$el.html(loginTemplate);
-      this.$el.find('#error').hide();
+      $('#error').hide();
     }
   });
 });

@@ -1,22 +1,34 @@
 var crypto = require('crypto');
 
 module.exports = function(config, mongose, nodemailer) {
+  var StatusSchema = new mongose.Schema({
+    name: {
+      first: { type: String },
+      last:  { type: String }
+    },
+    status:  { type: String }
+  });
+
+  AccountSchema = new mongose.Schema({
+    email:     { type: String, unique: true },
+    password:  { type: String },
+    name: {
+      first:   { type: String },
+      last:    { type: String }
+    },
+    birthday: {
+      day:     { type: Number, min: 1, max: 31, required: false },
+      month:   { type: Number, min: 1, max: 12, required: false },
+      year:    { type: Number }
+    },
+    photoUrl:  { type: String },
+    biography: { type: String },
+    status:    [Status], // My own status updates only
+    activity:  [Status]  // All status opdates including friends
+  });
+
   return {
-    Model: mongose.model('Account', new mongose.Schema({
-      email:     { type: String, unique: true },
-      password:  { type: String },
-      name: {
-        first:   { type: String },
-        last:    { type: String }
-      },
-      birthday: {
-        day:     { type: Number, min: 1, max: 31, required: false },
-        month:   { type: Number, min: 1, max: 12, required: false },
-        year:    { type: Number }
-      },
-      photoUrl:  { type: String },
-      biography: { type: String }
-    })),
+    Model: mongose.model('Account', AccountSchema),
 
     changePassword: function(accountId, newPassword, callback) {
       var hash     = crypto.createHash('sha256'),
