@@ -1,15 +1,34 @@
 !!! 5
 html(lang="en")
   head
+    meta(charset="utf-8")
     title Social Network
+
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    meta(name="description", content="")
+    meta(name="author", content="Adi Sayoga")
 
     link(rel="stylesheet", href="/css/bootstrap.min.css")
     link(rel="stylesheet", href="/css/bootstrap-responsive.min.css")
     link(rel="stylesheet", href="/css/style.css")
 
   body
-    h1 Social Network
+    div(class="navbar navbar-fixed-top navbar-inverse")
+      div(class="navbar-inner")
+        div(class="container")
+          a(class="btn btn-navbar", data-toggle="collapse", data-target=".nav-collapse")
+            span(class="icon-bar")
+            span(class="icon-bar")
+            span(class="icon-bar")
 
-    block content
+          a(class="brand", href) Social Network
+
+          div(class="nav-collapse collapse")
+            ul(class="nav")
+              li(class="active")
+                a(href) Home
+
+    div(class="container with-fixed-navbar")
+      block content
 
     block scripts

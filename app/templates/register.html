@@ -1,26 +1,54 @@
-<h1>Register</h1>
+<style type="text/css">
+  form #first-name, form #last-name { width: 50%; }
+  form #first-name {
+    border-top-right-radius: 0; border-bottom-right-radius: 0;
+  }
+  form #last-name {
+    border-left: none;
+    border-top-left-radius: 0; border-bottom-left-radius: 0;
+  }
+  form #email, form #confirm-email { width: 100%; }
+  form #password, form #confirm-password { width: 100%; max-width: 400px }
+</style>
 
-<form>
+<form class="form-horizontal">
   <fieldset>
-    <legend>Your Name</legend>
+    <legend>Register</legend>
 
-    <label>First: <input type="text" id="first-name"></label><br>
-    <label>Last: <input type="text" id="last-name"></label>
+    <div class="control-group">
+      <label class="control-label" for="first-name">Name:</label>
+      <div class="controls">
+        <input type="text" id="first-name" placeholder="First" required><input type="text" id="last-name" placeholder="Last">
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="email">Email Address:</label>
+      <div class="controls">
+        <input type="email" id="email" required>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="confirm-email">Email Address (confirm):</label>
+      <div class="controls">
+        <input type="email" id="confirm-email" required>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="password">Password:</label>
+      <div class="controls">
+        <input type="password" id="password" required>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="confirm-password">Password (confirm):</label>
+      <div class="controls">
+        <input type="password" id="confirm-password" required>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <input type="submit" class="btn btn-primary" value="Register Now">
+      </div>
+    </div>
   </fieldset>
-
-  <fieldset>
-    <legend>Email Address</legend>
-
-    <label>Email: <input type="email" id="email"></label><br>
-    <label>Email (confirm): <input type="email" id="confirm-email"></label>
-  </fieldset>
-
-  <fieldset>
-    <legend>Password</legend>
-
-    <label>Password: <input type="password" id="password"></label><br>
-    <label>Password (confirm): <input type="password" id="confirm-password"></label>
-  </fieldset>
-
-  <p><input type="submit" class="btn btn-primary" value="Register Now"></p>
 </form>

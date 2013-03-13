@@ -3,7 +3,8 @@ define(['text!templates/login.html'], function(loginTemplate) {
     el: $('.content'),
 
     events: {
-      'submit form': 'login'
+      'submit form': 'login',
+      'change input': 'resetError'
     },
 
     login: function() {
@@ -15,10 +16,14 @@ define(['text!templates/login.html'], function(loginTemplate) {
       }, function(data) {
         console.log(data);
       }).error(function() {
-        $el.find('#error').text('Unable to login.').slideDown();
+        $el.find('#login-error').text('Unable to login.').slideDown();
       });
 
       return false;
+    },
+
+    resetError: function() {
+      this.$el.find('#login-error').slideUp();
     },
 
     render: function() {
