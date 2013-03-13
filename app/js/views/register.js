@@ -3,7 +3,7 @@ define(['text!templates/register.html'], function(registerTemplate) {
     el: $('.content'),
 
     events: {
-      submit: 'register'
+      'submit form': 'register'
     },
 
     register: function() {

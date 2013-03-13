@@ -3,7 +3,7 @@ define(['text!templates/login.html'], function(loginTemplate) {
     el: $('.content'),
 
     events: {
-      submit: 'login'
+      'submit form': 'login'
     },
 
     login: function() {
