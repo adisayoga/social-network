@@ -1,6 +1,6 @@
 define(['views/index', 'views/register', 'views/login', 'views/forgot-password'],
 function(IndexView, RegisterView, LoginView, ForgotPasswordView) {
-  return new Backbone.Router.extend({
+  var Workspace = Backbone.Router.extend({
     currentView: null,
 
     routes: {
@@ -11,7 +11,6 @@ function(IndexView, RegisterView, LoginView, ForgotPasswordView) {
     },
 
     changeView: function(view) {
-      console.log('#changeView');
       if (this.currentView != null) this.currentView.undelegateEvents();
       this.currentView = view;
       this.currentView.render();
@@ -34,4 +33,6 @@ function(IndexView, RegisterView, LoginView, ForgotPasswordView) {
     }
 
   });
+
+  return new Workspace();
 });
