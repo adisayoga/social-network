@@ -16,5 +16,3 @@ require.config({
 require(['social-net'], function(socialNet) {
   socialNet.initialize();
 });
-
-
