@@ -23,12 +23,44 @@ module.exports = function(config, mongose, nodemailer) {
     },
     photoUrl:  { type: String },
     biography: { type: String },
-    status:    [Status], // My own status updates only
-    activity:  [Status]  // All status opdates including friends
+    status:    [StatusSchema], // My own status updates only
+    activity:  [StatusSchema]  // All status opdates including friends
   });
 
   return {
     Model: mongose.model('Account', AccountSchema),
+
+    addContact: function(account, contact) {
+      account.contacts.push({
+        name:      contact.name,
+        accountId: contact._id,
+        added:     new Date(),
+        updated:   new Date()
+      });
+
+      account.save(function(err) {
+        if (err) console.log('Error saving account: ' + err);
+      });
+    },
+
+    removeContact: function(account, contactId) {
+      if (account.contacts == null) return;
+
+      account.contacts.forEach(function(contact) {
+        if (contact.accountId == contactId)
+          account.contacts.remove(contact);
+      });
+      account.save();
+    },
+
+    hasContact: function(account, contactId) {
+      if (account.contacts == null) return false;
+
+      account.contacts.forEach(function(contact) {
+        if (contact.accountId == contactId) return true;
+      });
+      return false;
+    },
 
     changePassword: function(accountId, newPassword, callback) {
       var hash     = crypto.createHash('sha256'),
@@ -71,7 +103,7 @@ module.exports = function(config, mongose, nodemailer) {
         password: hash.update(password).digest('hex')
       };
       this.Model.findOne(conditions, function(err, doc) {
-        callback(doc != null);
+        callback(doc != null, doc);
       });
     },
 
@@ -88,7 +120,24 @@ module.exports = function(config, mongose, nodemailer) {
       });
 
       console.log('Save command was sent');
+    },
+
+    find: function(id, callback) {
+      this.Model.findOne({ _id: id }, function(err, doc) {
+        callback(doc);
+      });
+    },
+
+    search: function(searchText, callback) {
+      var searchRegex = new RegExp(searchText, 'i');
+      this.Model.find({
+        $or: [
+          { 'name.full': { $regex: searchRegex }},
+          { 'email':     { $regex: searchRegex }}
+        ]
+      }, callback);
     }
+
   };
 };
 

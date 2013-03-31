@@ -8,6 +8,10 @@ function(registerTemplate) {
       'submit form': 'register'
     },
 
+    render: function() {
+      this.$el.html(registerTemplate);
+    },
+
     register: function() {
       $.post('/register', {
         firstName: $('#first-name').val(),
@@ -18,10 +22,7 @@ function(registerTemplate) {
         console.log(data);
       });
       return false;
-    },
-
-    render: function() {
-      this.$el.html(registerTemplate);
     }
+
   });
 });

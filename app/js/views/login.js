@@ -9,25 +9,25 @@ function(loginTemplate) {
       'change input': 'resetError'
     },
 
+    render: function() {
+      this.$el.html(loginTemplate);
+      this.$('#login-error').hide();
+    },
+
     login: function() {
-      $.post('/login', {
-        email:    $el.find('#email').val(),
-        password: $el.find('#password').val()
-      }, function(data) {
+      var self = this;
+      $.post('/login', this.$('form').serialize(), function(data) {
         console.log(data);
-      }).error(function() {
-        $el.find('#login-error').text('Unable to login.').slideDown();
+        window.location.hash = '#index';
+      }).error(function(e) {
+        self.$('#login-error').text(e.responseText).hide().fadeIn();
       });
       return false;
     },
 
     resetError: function() {
-      $('#login-error').slideUp();
-    },
-
-    render: function() {
-      this.$el.html(loginTemplate);
-      $('#error').hide();
+      this.$('#login-error').fadeOut();
     }
+
   });
 });

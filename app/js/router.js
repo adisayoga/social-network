@@ -1,11 +1,17 @@
-define(['views/index', 'views/register', 'views/login', 'views/forgot-password'],
+define(['models/Account', 'collections/Statuses', 'collections/Contacts',
+        'views/Index', 'views/Register', 'views/Login', 'views/ForgotPassword',
+        'views/Profile', 'views/Contacts', 'views/AddContact'],
 
-function(IndexView, RegisterView, LoginView, ForgotPasswordView) {
+function(Account, Statuses, Contacts, IndexView, RegisterView, LoginView,
+         ForgotPasswordView, ProfileView, ContactsView, AddContactView) {
   var Workspace = Backbone.Router.extend({
     currentView: null,
 
     routes: {
       'index':           'index',
+      'add-contact':     'addContact',
+      'profile/:id':     'profile',
+      'contacts/:id':    'contacts',
       'login':           'login',
       'register':        'register',
       'forgot-password': 'forgotPassword'
@@ -18,7 +24,28 @@ function(IndexView, RegisterView, LoginView, ForgotPasswordView) {
     },
 
     index: function() {
-      this.changeView(new IndexView());
+      var statuses = new Statuses();
+      statuses.url = '/accounts/me/activity';
+      this.changeView(new IndexView( { collection: statuses }));
+      statuses.fetch();
+    },
+
+    addContact: function() {
+      this.changeView(new AddContactView());
+    },
+
+    profile: function(id) {
+      var model = new Account({ id: id });
+      this.changeView(new ProfileView({ model: model }));
+      model.fetch();
+    },
+
+    contacts: function(id) {
+      var contactId = id || 'me';
+      var contacts = new Contacts();
+      contacts.url = '/accounts/' + contactId + '/contacts';
+      this.changeView(new ContactsView({ collection: contacts }));
+      contacts.fetch();
     },
 
     login: function() {

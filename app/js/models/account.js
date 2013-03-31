@@ -1,4 +1,4 @@
-define(['collections/statuses'],
+define(['collections/Statuses'],
 
 function(Statuses) {
   return Backbone.Model.extend({

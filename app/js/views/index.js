@@ -1,4 +1,4 @@
-define(['models/status', 'views/status', 'text!templates/index.html'],
+define(['models/Status', 'views/Status', 'text!templates/index.html'],
 
 function(Status, StatusView, indexTemplate) {
   return Backbone.View.extend({
@@ -11,6 +11,10 @@ function(Status, StatusView, indexTemplate) {
     initialize: function() {
       this.collection.on('add', this.onCollectionAdd, this);
       this.collection.on('reset', this.onCollectionReset, this);
+    },
+
+    render: function() {
+      this.$el.html(indexTemplate);
     },
 
     onCollectionAdd: function(model) {
@@ -32,10 +36,7 @@ function(Status, StatusView, indexTemplate) {
         statusCollection.add(new Status({ status: statusText }));
       });
       return false;
-    },
-
-    render: function() {
-      this.$el.html(indexTemplate);
     }
+
   });
 });

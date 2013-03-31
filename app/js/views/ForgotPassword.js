@@ -8,17 +8,17 @@ function(forgotPasswordTemplate) {
       'submit form': 'forgotPassword'
     },
 
+    render: function() {
+      this.$el.html(forgotPasswordTemplate);
+    },
+
     forgotPassword: function() {
-      $.post('/forgot-password', {
-        email: $('#email').val()
-      }, function(data) {
+      var email = $('#email').val();
+      $.post('/forgot-password', { email: email }, function(data) {
         console.log(data);
       });
       return false;
-    },
-
-    render: function() {
-      this.$el.html(forgotPasswordTemplate);
     }
+
   });
 });
