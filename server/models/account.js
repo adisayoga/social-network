@@ -1,7 +1,7 @@
 var crypto = require('crypto');
 
-module.exports = function(config, mongose, nodemailer) {
-  var StatusSchema = new mongose.Schema({
+module.exports = function(config, mongoose, nodemailer) {
+  var StatusSchema = new mongoose.Schema({
     name: {
       first: { type: String },
       last:  { type: String }
@@ -9,35 +9,45 @@ module.exports = function(config, mongose, nodemailer) {
     status:  { type: String }
   });
 
-  AccountSchema = new mongose.Schema({
-    email:     { type: String, unique: true },
-    password:  { type: String },
+  var ContactSchema = new mongoose.Schema({
     name: {
       first:   { type: String },
       last:    { type: String }
     },
-    birthday: {
-      day:     { type: Number, min: 1, max: 31, required: false },
-      month:   { type: Number, min: 1, max: 12, required: false },
-      year:    { type: Number }
+    accountId: { type: mongoose.Schema.ObjectId },
+    added:     { type: Date },     // When the contact was added
+    updated:   { type: Date }      // When the contact last updated
+  });
+
+  AccountSchema = new mongoose.Schema({
+    email:      { type: String, unique: true },
+    password:   { type: String },
+    name: {
+      first:    { type: String },
+      last:     { type: String }
     },
-    photoUrl:  { type: String },
-    biography: { type: String },
-    status:    [StatusSchema], // My own status updates only
-    activity:  [StatusSchema]  // All status opdates including friends
+    birthday: {
+      day:      { type: Number, min: 1, max: 31, required: false },
+      month:    { type: Number, min: 1, max: 12, required: false },
+      year:     { type: Number }
+    },
+    photoUrl:   { type: String },
+    biography:  { type: String },
+    contacts:   [ContactSchema],
+    statuses:   [StatusSchema], // My own status updates only
+    activities: [StatusSchema]  // All status opdates including friends
   });
 
   return {
-    Model: mongose.model('Account', AccountSchema),
+    Model: mongoose.model('Account', AccountSchema),
 
     addContact: function(account, contact) {
       account.contacts.push({
-        name:      contact.name,
+        name:      { first: contact.name.first, last: contact.name.last },
         accountId: contact._id,
         added:     new Date(),
         updated:   new Date()
       });
-
       account.save(function(err) {
         if (err) console.log('Error saving account: ' + err);
       });

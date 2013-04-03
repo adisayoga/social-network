@@ -13,10 +13,11 @@ function(ContactView, contactsTemplate) {
     },
 
     renderCollection: function(collection) {
+      var self = this;
       collection.each(function(contact) {
         var contactView = new ContactView({ removeButton: true, model: contact });
-        var statusHtml = contactView.render().el;
-        $(statusHtml).appendTo('.contacts-list');
+        contactView.render();
+        self.$('.contacts-list').append(contactView.el);
       });
     }
 

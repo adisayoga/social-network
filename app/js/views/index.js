@@ -18,8 +18,9 @@ function(Status, StatusView, indexTemplate) {
     },
 
     onCollectionAdd: function(model) {
-      var statusHtml = (new Statusview({ model: model })).render().el;
-      $(statusHtml).prependTo('.status-list').hide().fadeIn('slow');
+      var statusView = new StatusView({ model: model });
+      statusView.render();
+      this.$('.status-list').prepend(statusView.el).hide().fadeIn('slow');
     },
 
     onCollectionReset: function(collection) {
@@ -30,11 +31,12 @@ function(Status, StatusView, indexTemplate) {
     },
 
     updateStatus: function() {
-      var statusText = $('#status').val();
+      var statusText = this.$('#status').val();
       var statusCollection = this.collection;
       $.post('/accounts/me/status', { status: statusText }, function(data) {
         statusCollection.add(new Status({ status: statusText }));
       });
+      this.$('#status').val('');
       return false;
     }
 

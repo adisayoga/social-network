@@ -13,7 +13,7 @@ function(forgotPasswordTemplate) {
     },
 
     forgotPassword: function() {
-      var email = $('#email').val();
+      var email = this.$('#email').val();
       $.post('/forgot-password', { email: email }, function(data) {
         console.log(data);
       });

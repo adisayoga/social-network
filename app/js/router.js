@@ -26,7 +26,7 @@ function(Account, Statuses, Contacts, IndexView, RegisterView, LoginView,
     index: function() {
       var statuses = new Statuses();
       statuses.url = '/accounts/me/activity';
-      this.changeView(new IndexView( { collection: statuses }));
+      this.changeView(new IndexView({ collection: statuses }));
       statuses.fetch();
     },
 

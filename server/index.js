@@ -3,7 +3,7 @@ var APP_DIR       = __dirname + '/../app',
 
 var express    = require('express'),
     connect    = require('connect'),
-    mongose    = require('mongoose'),
+    mongoose   = require('mongoose'),
     nodemailer = require('nodemailer');
 
 var MemoryStore = connect.session.MemoryStore;
@@ -14,7 +14,7 @@ var config = {
 
 // Import the models
 var models = {
-  account: require('./models/account')(config, mongose, nodemailer)
+  account: require('./models/account')(config, mongoose, nodemailer)
 }
 
 var app = express();
@@ -26,7 +26,7 @@ app.configure(function() {
   app.use(express.bodyParser());
   app.use(express.cookieParser());
   app.use(express.session({ secret: "secret key", store: new MemoryStore() }));
-  mongose.connect('mongodb://localhost/social-network');
+  mongoose.connect('mongodb://localhost/social-network');
 });
 
 var getAccountId = function(req) {
@@ -42,7 +42,7 @@ var getAccountId = function(req) {
 //  - 500 (Internal Server Error)
 
 app.listen(8080, function() {
-  console.log('Server listening on port 8080');
+  console.log('Server is listening on port 8080');
 });
 
 
@@ -56,9 +56,9 @@ app.get('/', function(req, res) {
 /*-- Account --*/
 
 app.get('/accounts/:id', function(req, res) {
-  models.account.find(getAccountId(req), function(account) {
-    if (accountId == 'me'
-        || models.account.hasContact(account, req.session.accountId)) {
+  var accountId = getAccountId(req);
+  models.account.find(accountId, function(account) {
+    if (req.params.id == 'me' || models.account.hasContact(account, accountId)) {
       account.isFriend = true;
     }
     res.send(account);
@@ -70,7 +70,7 @@ app.get('/accounts/:id', function(req, res) {
 
 app.get('/accounts/:id/status', function(req, res) {
   models.account.find(getAccountId(req), function(data) {
-    res.send(account.status);
+    res.send(account.statuses);
   });
 });
 
@@ -80,10 +80,10 @@ app.post('/accounts/:id/status', function(req, res) {
       name: account.name,
       status: req.param('status', '')
     };
-    account.status.push(status);
+    account.statuses.push(status);
 
     // Push the status to all friends
-    account.activity.push(status);
+    account.activities.push(status);
     account.save(function(err) {
       if (err) console.log('Error saving account: ' + err);
     });
@@ -96,20 +96,20 @@ app.post('/accounts/:id/status', function(req, res) {
 
 app.get('/accounts/:id/activity', function(req, res) {
   models.account.find(getAccountId(req), function(account) {
-    res.send(account.activity);
+    res.send(account.activities);
   });
 });
 
 
 /*-- Contacts account --*/
 
-app.get('/accounts/:id/contact', function(req, res) {
+app.get('/accounts/:id/contacts', function(req, res) {
   models.account.find(getAccountId(req), function(account) {
     res.send(account.contacts);
   });
 });
 
-app.post('/account/:id/contact', function(req, res) {
+app.post('/accounts/:id/contact', function(req, res) {
   var accountId = getAccountId(req)
   var contactId = req.param('contactId', null);
 

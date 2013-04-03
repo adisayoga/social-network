@@ -27,7 +27,7 @@ function(Status, StatusView, profileTemplate, statusTemplate) {
 
     postStatus: function() {
       var self = this;
-      var statusText = $('input[name="status"]').val();
+      var statusText = this.$('#status').val();
       var collection = this.collection;
       $.post(
         '/accounts/' + this.model.get('_id') + '/status',
@@ -36,13 +36,14 @@ function(Status, StatusView, profileTemplate, statusTemplate) {
           self.prependStatus(new Status({ status: statusText }));
         }
       );
+      this.$('#status').val('');
       return false;
     },
 
     prependStatus: function(statusModel) {
       var statusView = new StatusView({ model: statusModel });
-      var statusHtml = statusView.render().el;
-      $(statusHtml).prependTo('.status-list').hide().fadeIn('slow');
+      statusView.render();
+      this.$('.status-list').prepend(statusView.el).hide().fadeIn('slow');
     }
 
   });

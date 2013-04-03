@@ -12,6 +12,10 @@ function(loginTemplate) {
     render: function() {
       this.$el.html(loginTemplate);
       this.$('#login-error').hide();
+
+      // TODO: Hapus ini
+      this.$('#email').val('adisayoga@gmail.com');
+      this.$('#password').val('password');
     },
 
     login: function() {

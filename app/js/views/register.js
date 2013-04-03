@@ -13,12 +13,7 @@ function(registerTemplate) {
     },
 
     register: function() {
-      $.post('/register', {
-        firstName: $('#first-name').val(),
-        lastName:  $('#last-name').val(),
-        email:     $('#email').val(),
-        password:  $('#password').val()
-      }, function(data) {
+      $.post('/register', this.$('form').serialize(), function(data) {
         console.log(data);
       });
       return false;

@@ -1,15 +1,16 @@
-<h1><%= model.name.first %> <%= model.name.last %></h1>
-
-<% if (!addButton) { %>
-  <p><a href="#profile/<%= model.accountId %>">View</a></p>
+<% if (addButton) { %>
+  <h1><%= model.name.first %> <%= model.name.last %></h1>
+<% } else { %>
+  <h1><a href="#profile/<%= model.accountId %>">
+    <%= model.name.first %> <%= model.name.last %></a></h1>
 <% } %>
 
 <div class="action-area">
   <% if (addButton) { %>
-    <p><button class="btn add-button">Add Contact</button></p>
+    <button class="btn add-button">Add Contact</button>
   <% } %>
 
   <% if (removeButton) { %>
-    <p><button class="btn remove-button">Remove Contact</button></p>
+    <button class="btn remove-button">Remove Contact</button>
   <% } %>
 </div>

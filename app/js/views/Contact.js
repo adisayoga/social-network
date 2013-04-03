@@ -20,7 +20,7 @@ function(contactTemplate) {
     },
 
     render: function() {
-      $(this.el).html(_.template(contactTemplate, {
+      this.$el.html(_.template(contactTemplate, {
         model:        this.model.toJSON(),
         addButton:    this.addButton,
         removeButton: this.removeButton
@@ -29,11 +29,10 @@ function(contactTemplate) {
 
     addContact: function() {
       var $responseArea = this.$('.action-area');
-      $post('/accounts/me/contact', { contactId: this.model.get('_id') },
-        function() {
+      $.post('/accounts/me/contact', { contactId: this.model.get('_id') },
+        function(data) {
           $responseArea.text('Contact added');
-        },
-        function() {
+        }).error(function() {
           $responseArea.text('Could not add contact');
         });
     },
