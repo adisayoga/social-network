@@ -12,3 +12,16 @@ input[type="tel"], input[type="color"],
 @media(min-width: 979px) {
   .container.with-fixed-navbar { margin-top: 60px; }
 }
+
+.chat { position: absolute; right: 0; bottom: 0; }
+.chat form { width: auto; }
+
+.chat-list {
+  float: right; border: 1px solid black; list-style-type: none;
+  overflow: auto; width: 120px; height: 300px; margin: 0; padding: 0;
+}
+.chat-list li { width: 100%; padding: 10px 0; background-color: #0099ff; }
+.chat-list li:nth-child(odd) { background-color: #80ccff; }
+.chat-list span { margin: 10px; }
+
+.chat-session { float: left; width: 250px; height: 300px; }

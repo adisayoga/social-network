@@ -9,6 +9,10 @@ function(loginTemplate) {
       'change input': 'resetError'
     },
 
+    initialize: function(options) {
+      this.socketEvents = options.socketEvents;
+    },
+
     render: function() {
       this.$el.html(loginTemplate);
       this.$('#login-error').hide();
@@ -21,8 +25,8 @@ function(loginTemplate) {
     login: function() {
       var self = this;
       $.post('/login', this.$('form').serialize(), function(data) {
-        console.log(data);
-        window.location.hash = '#index';
+        self.socketEvents.trigger('app:loggedIn');
+        window.location.hash = 'index';
       }).error(function(e) {
         self.$('#login-error').text(e.responseText).hide().fadeIn();
       });

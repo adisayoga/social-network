@@ -17,6 +17,8 @@ function(Account, Statuses, Contacts, IndexView, RegisterView, LoginView,
       'forgot-password': 'forgotPassword'
     },
 
+    socketEvents: _.extend({}, Backbone.Events),
+
     changeView: function(view) {
       if (this.currentView != null) this.currentView.undelegateEvents();
       this.currentView = view;
@@ -49,7 +51,7 @@ function(Account, Statuses, Contacts, IndexView, RegisterView, LoginView,
     },
 
     login: function() {
-      this.changeView(new LoginView());
+      this.changeView(new LoginView({ socketEvents: this.socketEvents }));
     },
 
     register: function() {

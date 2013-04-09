@@ -1,22 +1,27 @@
-define(['router'],
+define(['router', 'socialNetSockets'],
 
-function(router) {
-  var initialize = function() {
-    checkLogin(runApplication);
+function(router, socket) {
+  return {
+    initialize: function() {
+      socket.initialize(router.socketEvents);
+      this.checkLogin(this.runApplication);
+    },
+
+    checkLogin: function(callback) {
+      $.get('/account/authenticate', function() {
+        callback(true);
+      }).error(function() {
+        callback(false);
+      });
+    },
+
+    runApplication: function(authenticated) {
+      if (!authenticated) {
+        window.location.hash = 'login';
+      } else {
+        if (!window.location.hash) window.location.hash = 'index';
+      }
+      Backbone.history.start();
+    }
   };
-
-  var checkLogin = function(callback) {
-    $.get('/account/authenticate', function() {
-      callback(true);
-    }).error(function() {
-      callback(false);
-    });
-  };
-
-  var runApplication = function(authenticated) {
-    window.location.hash = authenticated ? 'index' : 'login';
-    Backbone.history.start();
-  };
-
-  return { initialize: initialize };
 });

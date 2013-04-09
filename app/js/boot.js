@@ -3,6 +3,7 @@ require.config({
     jquery:     '/libs/jquery.min',
     underscore: '/libs/underscore.min',
     backbone:   '/libs/backbone.min',
+    sockets:    '/socket.io/socket.io',
     text:       '/libs/text',
     bootstrap:  '/libs/bootstrap.min',
     templates:  '../templates'
