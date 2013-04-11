@@ -27,15 +27,16 @@ function(chatItemTemplate) {
     },
 
     receiveChat: function(data) {
-      var chatLine = this.model.get('name').first + ': ' + data.text;
-      this.$el.find('.chat-log').append('<li>' + chatLine + '</li>');
+      var chatLine = '<strong>' + this.model.get('name').first + '</strong>: '
+                   + data.text;
+      this.$el.find('.chat-log ul').append('<li>' + chatLine + '</li>');
     },
 
     sendChat: function() {
       var chatText = this.$el.find('#chat').val();
       if (chatText && /[^\s]+/.test(chatText)) {
-        var chatLine = 'Me: ' + chatText;
-        this.$el.find('.chat-log').append('<li>' + chatLine + '</li>');
+        var chatLine = '<strong>Me:</strong> ' + chatText;
+        this.$el.find('.chat-log ul').append('<li>' + chatLine + '</li>');
         this.socketEvents.trigger('socket:chat', {
           to:   this.model.get('accountId'),
           text: chatText

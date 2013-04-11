@@ -1,27 +1,26 @@
-select, textarea,
-input[type="text"], input[type="password"], input[type="datetime"],
-input[type="datetime-local"], input[type="date"], input[type="month"],
-input[type="time"], input[type="week"], input[type="number"],
-input[type="email"], input[type="url"], input[type="search"],
-input[type="tel"], input[type="color"],
-.uneditable-input {
-  box-sizing: border-box;
-  height: auto;
-}
+* { box-sizing: border-box; }
 
 @media(min-width: 979px) {
   .container.with-fixed-navbar { margin-top: 60px; }
 }
 
-.chat { position: absolute; right: 0; bottom: 0; }
-.chat form { width: auto; }
+.chat { 
+  position: absolute; right: 0; bottom: 0; height: 300px;
+  background: #fff; border: 1px solid #aaa; padding: 5px;
+}
 
 .chat-list {
-  float: right; border: 1px solid black; list-style-type: none;
-  overflow: auto; width: 120px; height: 300px; margin: 0; padding: 0;
+  float: right; list-style-type: none; overflow: auto; width: 120px; 
+  background-color: whitesmoke; min-height: 285px; overflow: auto;
+  margin: 0;
 }
-.chat-list li { width: 100%; padding: 10px 0; background-color: #0099ff; }
-.chat-list li:nth-child(odd) { background-color: #80ccff; }
-.chat-list span { margin: 10px; }
+.chat-list li:hover { background-color: #18B2EE; }
+.chat-list span { display: block; padding: 10px; cursor: pointer; }
 
-.chat-session { float: left; width: 250px; height: 300px; }
+.chat-session { 
+  float: left; width: 250px; position: relative; height: 285px; 
+  margin-right: 5px;
+}
+.chat-session form { position: absolute; bottom: 0; margin: 0; width: 100%; }
+.chat-session form input[type="text"] { width: 100%; }
+.chat-session .chat-log { max-height: 250px; overflow: auto; }
