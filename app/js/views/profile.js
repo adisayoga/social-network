@@ -1,3 +1,5 @@
+'use strict';
+
 define(['models/Status', 'views/Status', 'text!templates/profile.html',
         'text!templates/status.html'],
 

@@ -1,10 +1,10 @@
+'use strict';
+
 define(['text!templates/chat-item.html'],
 
 function(chatItemTemplate) {
   return Backbone.View.extend({
     tagName: 'li',
-
-    $el: $(this.el),
 
     events: {
       'click': 'startChatSession',

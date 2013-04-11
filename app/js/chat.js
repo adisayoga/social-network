@@ -1,3 +1,5 @@
+'use strict';
+
 define(['sockets', 'models/Contacts', 'views/chat'],
 
 function(io, Contacts, ChatView) {

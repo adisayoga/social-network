@@ -1,3 +1,5 @@
+'use strict';
+
 define(['text!templates/contact.html'],
 
 function(contactTemplate) {

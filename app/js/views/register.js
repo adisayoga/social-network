@@ -1,3 +1,5 @@
+'use strict';
+
 define(['text!templates/register.html'],
 
 function(registerTemplate) {

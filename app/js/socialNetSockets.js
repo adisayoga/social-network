@@ -1,3 +1,5 @@
+'use strict';
+
 define(['sockets', 'collections/Contacts', 'views/Chat'],
 
 function(sio, Contacts, ChatView) {

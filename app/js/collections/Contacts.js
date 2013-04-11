@@ -1,3 +1,5 @@
+'use strict';
+
 define(['models/Contact'],
 
 function(Contact) {

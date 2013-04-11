@@ -1,3 +1,5 @@
+'use strict';
+
 define(['models/Contact', 'views/Contact', 'text!templates/add-contact.html'],
 
 function(Contact, ContactView, addContactTemplate) {

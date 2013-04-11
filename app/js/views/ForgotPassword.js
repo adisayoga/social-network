@@ -1,3 +1,5 @@
+'use strict';
+
 define(['text!templates/forgot-password.html'],
 
 function(forgotPasswordTemplate) {

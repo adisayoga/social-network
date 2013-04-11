@@ -1,3 +1,5 @@
+'use strict';
+
 define(['views/ChatSession', 'views/ChatItem', 'text!templates/chat.html'],
 
 function(ChatSessionView, ChatItemView, chatTemplate) {

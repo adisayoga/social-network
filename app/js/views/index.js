@@ -1,3 +1,5 @@
+'use strict';
+
 define(['models/Status', 'views/Status', 'text!templates/index.html'],
 
 function(Status, StatusView, indexTemplate) {

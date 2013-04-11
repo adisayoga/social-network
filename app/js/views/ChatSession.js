@@ -1,3 +1,5 @@
+'use strict';
+
 define(['text!templates/chat-session.html'],
 
 function(chatItemTemplate) {
@@ -5,8 +7,6 @@ function(chatItemTemplate) {
     tagName: 'div',
 
     className: 'chat-session',
-
-    $el: $(this.el),
 
     events: {
       'submit form': 'sendChat'

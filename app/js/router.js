@@ -1,3 +1,5 @@
+'use strict';
+
 define(['models/Account', 'collections/Statuses', 'collections/Contacts',
         'views/Index', 'views/Register', 'views/Login', 'views/ForgotPassword',
         'views/Profile', 'views/Contacts', 'views/AddContact'],

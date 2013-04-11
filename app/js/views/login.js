@@ -1,3 +1,5 @@
+'use strict';
+
 define(['text!templates/login.html'],
 
 function(loginTemplate) {

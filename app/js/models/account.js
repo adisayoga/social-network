@@ -1,3 +1,5 @@
+'use strict';
+
 define(['collections/Statuses'],
 
 function(Statuses) {
