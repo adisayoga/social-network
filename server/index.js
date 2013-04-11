@@ -1,12 +1,13 @@
-var APP_DIR       = __dirname + '/../app',
-    TEMPLATES_DIR = __dirname + '/templates';
+var APP_DIR       = __dirname + '/../app';
+var TEMPLATES_DIR = __dirname + '/templates';
 
-var express    = require('express'),
-    http       = require('http'),
-    connect    = require('connect'),
-    mongoose   = require('mongoose'),
-    nodemailer = require('nodemailer'),
-    fs         = require('fs');
+var express    = require('express');
+var http       = require('http');
+var connect    = require('connect');
+var mongoose   = require('mongoose');
+var nodemailer = require('nodemailer');
+var fs         = require('fs');
+var events     = require('events');
 
 var config = {
   mail: require('./config/mail')

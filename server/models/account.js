@@ -73,12 +73,12 @@ module.exports = function(config, mongoose, nodemailer) {
     },
 
     changePassword: function(accountId, newPassword, callback) {
-      var hash     = crypto.createHash('sha256'),
-          password = hash.update(newPassword).digest('hex');
+      var hash     = crypto.createHash('sha256');
+      var password = hash.update(newPassword).digest('hex');
 
-      var conditions = { _id: accountId },
-          doc        = { $set: { password: password }},
-          options    = { upsert: false };
+      var conditions = { _id: accountId };
+      var doc        = { $set: { password: password }};
+      var options    = { upsert: false };
 
       this.Model.update(conditions, doc, options, function(err) {
         callback(!err);
