@@ -14,22 +14,40 @@ function(chatItemTemplate) {
 
     initialize: function(options) {
       this.socketEvents = options.socketEvents;
-      this.socketEvents.on(
-        'socket:chat:in:' + this.model.get('accountId'),
-        this.receiveChat,
-        this);
+      var accountId = this.model.get('accountId');
+
+      this.socketEvents.bind('socket:chat:in:' + accountId, this.receiveChat, this);
+      this.socketEvents.bind('login:' + accountId, this.handleContactLogin, this);
+      this.socketEvents.bind('logout:' + accountId, this.handleContactLogout, this);
     },
 
     render: function() {
       this.$el.html(_.template(chatItemTemplate, {
         model: this.model.toJSON()
       }));
+      if (this.model.get('online')) this.handleContactLogin();
     },
 
     receiveChat: function(data) {
       var chatLine = '<strong>' + this.model.get('name').first + '</strong>: '
                    + data.text;
       this.$el.find('.chat-log ul').append('<li>' + chatLine + '</li>');
+    },
+
+    handleContactLogin: function() {
+      this.model.set('online', true);
+      this.$('.online-indicator').addClass('online');
+    },
+
+    handleContactLogout: function() {
+      this.model.set('online', false);
+
+      $onlineIndicator = this.$('.online-indicator');
+      while ($onlineIndicator.hasClass('online'))
+        $onlineIndicator.removeClass('online');
+
+      // Apa bedanya dengan:
+      // this.$('.online-indicator').removeClass('online');
     },
 
     sendChat: function() {

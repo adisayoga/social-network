@@ -11,16 +11,22 @@ function(Status, StatusView, profileTemplate, statusTemplate) {
       'submit form': 'postStatus'
     },
 
-    initialize: function() {
+    initialize: function(options) {
+      this.socketEvents = options.socketEvents;
       this.model.bind('change', this.render, this);
     },
 
     render: function() {
       var self = this;
+      if (this.model.get('_id')) {
+        this.socketEvents.bind('status:' + this.model.get('_id'),
+          this.onSocketStatusAdded, this);
+      }
+
       this.$el.html(_.template(profileTemplate, this.model.toJSON()));
 
       var statuses = this.model.get('statuses');
-      if (statuses == null) return;
+      if (statuses === null) return;
       _.each(statuses, function(statusJson) {
         var statusModel = new Status(statusJson);
         self.prependStatus(statusModel);
@@ -28,16 +34,8 @@ function(Status, StatusView, profileTemplate, statusTemplate) {
     },
 
     postStatus: function() {
-      var self = this;
-      var statusText = this.$('#status').val();
-      var collection = this.collection;
-      $.post(
-        '/accounts/' + this.model.get('_id') + '/status',
-        { status: statusText },
-        function(data) {
-          self.prependStatus(new Status({ status: statusText }));
-        }
-      );
+      var data = { status: this.$('#status').val() };
+      $.post('/accounts/' + this.model.get('_id') + '/status', data);
       this.$('#status').val('');
       return false;
     },
@@ -46,6 +44,14 @@ function(Status, StatusView, profileTemplate, statusTemplate) {
       var statusView = new StatusView({ model: statusModel });
       statusView.render();
       this.$('.status-list').prepend(statusView.el).hide().fadeIn('slow');
+    },
+
+    onSocketStatusAdded: function(data) {
+      var newStatus = data.data;
+      this.prependStatus(new Status({
+        status: newStatus.status,
+        name:   newStatus.name
+      }));
     }
 
   });

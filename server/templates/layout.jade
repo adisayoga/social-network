@@ -21,12 +21,16 @@ html(lang="en")
             span(class="icon-bar")
             span(class="icon-bar")
 
-          a(class="brand", href) Social Network
+          a(class="brand", href="#index") Social Network
 
           div(class="nav-collapse collapse")
             ul(class="nav")
-              li(class="active")
-                a(href) Home
+              li(class="home")
+                a(href="#index") Home
+              li(class="profile")
+                a(href="#profile/me") Profile
+              li(class="contacts")
+                a(href="#contacts/me") Contacts
 
     div(class="container with-fixed-navbar")
       block content

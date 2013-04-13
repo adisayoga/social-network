@@ -6,11 +6,11 @@ module.exports = function(app, models) {
   });
 
   app.post('/accounts/:id/contact', function(req, res) {
-    var accountId = getAccountId(req)
+    var accountId = getAccountId(req);
     var contactId = req.param('contactId', null);
 
     // Missing contactId, don't bother going any further
-    if (contactId == null) return res.send(400); // Bad request
+    if (contactId === null) return res.send(400); // Bad request
 
     models.account.find(accountId, function(account) {
       if (!account) return;
@@ -32,7 +32,7 @@ module.exports = function(app, models) {
     var contactId = req.param('contactId', null);
 
     // Missing contactId, don't bother going any further
-    if (contactId == null) return res.send(400); // Bad request
+    if (contactId === null) return res.send(400); // Bad request
 
     models.account.find(accountId, function(account) {
       if (!account) return;
@@ -40,7 +40,6 @@ module.exports = function(app, models) {
         if (!contact) return;
         models.account.removeContact(account, contactId);
         models.account.removeContact(contact, accountId); // Kill the reverse link
-        account.save();
       });
     });
 
@@ -51,10 +50,10 @@ module.exports = function(app, models) {
 
   app.post('/contacts/find', function(req, res) {
     var searchText = req.param('searchText', null);
-    if (searchText == null) return res.send(400); // Bad request
+    if (searchText === null) return res.send(400); // Bad request
 
     models.account.search(searchText, function(err, accounts) {
-      if (err || accounts.length == 0) return res.send(404); // Not found
+      if (err || accounts.length === 0) return res.send(404); // Not found
       res.send(accounts);
     });
   });

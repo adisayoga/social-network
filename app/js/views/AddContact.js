@@ -13,7 +13,7 @@ function(Contact, ContactView, addContactTemplate) {
     render: function(resultList) {
       var self = this;
       this.$el.html(_.template(addContactTemplate));
-      if (resultList == null) return;
+      if (resultList === null) return;
 
       _.each(resultList, function(contactJson) {
         var contactModel = new Contact(contactJson);

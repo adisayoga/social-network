@@ -6,8 +6,10 @@ module.exports = function(app, models) {
   });
 
   app.post('/accounts/:id/status', function(req, res) {
+    var accountId = getAccountId(req);
+
     models.account.find(getAccountId(req), function(account) {
-      status = {
+      var status = {
         name: account.name,
         status: req.param('status', '')
       };
@@ -16,7 +18,13 @@ module.exports = function(app, models) {
       // Push the status to all friends
       account.activities.push(status);
       account.save(function(err) {
-        if (err) console.log('Error saving account: ' + err);
+        if (err) return console.log('Error saving account: ' + err);
+
+        app.triggerEvent('event:' + accountId, {
+          from:   accountId,
+          data:   status,
+          action: 'status'
+        });
       });
     });
     res.send(200); // OK

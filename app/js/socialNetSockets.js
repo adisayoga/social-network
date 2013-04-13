@@ -6,23 +6,29 @@ function(sio, Contacts, ChatView) {
   return {
     eventDispatcher: null,
     socket: null,
+    accountId: '',
 
     initialize: function(eventDispatcher) {
       this.eventDispatcher = eventDispatcher;
       eventDispatcher.bind('app:loggedIn', this.connectSocket, this);
     },
 
-    connectSocket: function() {
+    connectSocket: function(accountId) {
       var self = this;
+      this.accountId = accountId;
       this.socket = io.connect();
 
       this.socket
         .on('connect', function() {
           self.eventDispatcher.bind('socket:chat', self.sendChat, self);
+
           self.socket.on('chatServer', function(data) {
             self.eventDispatcher.trigger('socket:chat:start:' + data.from);
             self.eventDispatcher.trigger('socket:chat:in:' + data.from, data);
           });
+
+          self.socket.on('contactEvent', self.handleContactEvent);
+
           var contacts = new Contacts();
           contacts.url = '/accounts/me/contacts';
           contacts.fetch();
@@ -38,8 +44,18 @@ function(sio, Contacts, ChatView) {
         });
     },
 
+    handleContactEvent: function(eventObject) {
+      var eventName = '';
+      if (eventObject == this.accountId) {
+        eventName = eventObject.action + ':me';
+      } else {
+        eventName = eventObject.action + ':' + eventObject.from;
+      }
+      this.eventDispatcher.trigger(eventName, eventObject);
+    },
+
     sendChat: function(payload) {
-      if (this.socket != null) this.socket.emit('chatClient', payload);
+      if (this.socket !== null) this.socket.emit('chatClient', payload);
     }
-  }
+  };
 });

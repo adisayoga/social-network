@@ -42,7 +42,7 @@ function(io, Contacts, ChatView) {
     },
 
     sendChat: function(payload) {
-      if (this.socket != null) this.socket.emit('chatClient', payload);
+      if (this.socket !== null) this.socket.emit('chatClient', payload);
     }
   };
 });

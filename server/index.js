@@ -22,6 +22,18 @@ var models = {
 var app = express();
 app.server = http.createServer(app);
 
+// Create an event dispatcher
+var eventDispatcher = new events.EventEmitter();
+app.addEventListener = function(eventName, callback) {
+  eventDispatcher.on(eventName, callback);
+};
+app.removeEventListener = function(eventName, callback) {
+  eventDispatcher.removeListener(eventName, callback);
+};
+app.triggerEvent = function(eventName, eventOptions) {
+  eventDispatcher.emit(eventName, eventOptions);
+};
+
 app.configure(function() {
   // Create a session store to share between methods
   app.sessionStore = new connect.session.MemoryStore();

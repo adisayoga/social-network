@@ -22,7 +22,9 @@ function(Account, Statuses, Contacts, IndexView, RegisterView, LoginView,
     socketEvents: _.extend({}, Backbone.Events),
 
     changeView: function(view) {
-      if (this.currentView != null) this.currentView.undelegateEvents();
+      $('.navbar .nav > li').removeClass('active');
+
+      if (this.currentView !== null) this.currentView.undelegateEvents();
       this.currentView = view;
       this.currentView.render();
     },
@@ -30,8 +32,13 @@ function(Account, Statuses, Contacts, IndexView, RegisterView, LoginView,
     index: function() {
       var statuses = new Statuses();
       statuses.url = '/accounts/me/activity';
-      this.changeView(new IndexView({ collection: statuses }));
       statuses.fetch();
+
+      this.changeView(new IndexView({
+        collection:   statuses,
+        socketEvents: this.socketEvents
+      }));
+      $('.navbar .nav > .home').addClass('active');
     },
 
     addContact: function() {
@@ -40,16 +47,23 @@ function(Account, Statuses, Contacts, IndexView, RegisterView, LoginView,
 
     profile: function(id) {
       var model = new Account({ id: id });
-      this.changeView(new ProfileView({ model: model }));
       model.fetch();
+
+      this.changeView(new ProfileView({
+        model:        model,
+        socketEvents: this.socketEvents
+      }));
+      $('.navbar .nav > .profile').addClass('active');
     },
 
     contacts: function(id) {
       var contactId = id || 'me';
       var contacts = new Contacts();
       contacts.url = '/accounts/' + contactId + '/contacts';
-      this.changeView(new ContactsView({ collection: contacts }));
       contacts.fetch();
+
+      this.changeView(new ContactsView({ collection: contacts }));
+      $('.navbar .nav > .contacts').addClass('active');
     },
 
     login: function() {

@@ -1,26 +1,32 @@
-* { box-sizing: border-box; }
+div, span, input, select, textarea { box-sizing: border-box; }
 
 @media(min-width: 979px) {
   .container.with-fixed-navbar { margin-top: 60px; }
 }
 
-.chat { 
-  position: absolute; right: 0; bottom: 0; height: 300px;
+.chat {
+  position: fixed; right: 0; bottom: 0; height: 300px;
   background: #fff; border: 1px solid #aaa; padding: 5px;
 }
 
 .chat-list {
-  float: right; list-style-type: none; overflow: auto; width: 120px; 
-  background-color: whitesmoke; min-height: 285px; overflow: auto;
+  float: right; list-style-type: none; overflow: auto; width: 120px;
+  background-color: whitesmoke; min-height: 285px;
   margin: 0;
 }
 .chat-list li:hover { background-color: #18B2EE; }
 .chat-list span { display: block; padding: 10px; cursor: pointer; }
 
-.chat-session { 
-  float: left; width: 250px; position: relative; height: 285px; 
+.chat-session {
+  float: left; width: 250px; position: relative; height: 285px;
   margin-right: 5px;
 }
 .chat-session form { position: absolute; bottom: 0; margin: 0; width: 100%; }
 .chat-session form input[type="text"] { width: 100%; }
 .chat-session .chat-log { max-height: 250px; overflow: auto; }
+
+.online-indicator {
+  float: left; width: 15px; height: 16px;
+  background-image: url('../img/traffic-light.png');
+}
+.online-indicator.online { background-position: -15px 0; }

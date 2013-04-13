@@ -1,6 +1,6 @@
 var crypto = require('crypto');
 
-module.exports = function(config, mongoose, nodemailer) {
+module.exports = function(app, config, mongoose, nodemailer) {
   var StatusSchema = new mongoose.Schema({
     name: {
       first: { type: String },
@@ -8,6 +8,11 @@ module.exports = function(config, mongoose, nodemailer) {
     },
     status:  { type: String }
   });
+
+  var schemaOptions = {
+    toJSON:   { virtuals: true },
+    toObject: { virtuals: true }
+  };
 
   var ContactSchema = new mongoose.Schema({
     name: {
@@ -17,9 +22,13 @@ module.exports = function(config, mongoose, nodemailer) {
     accountId: { type: mongoose.Schema.ObjectId },
     added:     { type: Date },     // When the contact was added
     updated:   { type: Date }      // When the contact last updated
+  }, schemaOptions);
+
+  ContactSchema.virtual('online').get(function() {
+    return app.isAccountOnline(this.get('accountId'));
   });
 
-  AccountSchema = new mongoose.Schema({
+  var AccountSchema = new mongoose.Schema({
     email:      { type: String, unique: true },
     password:   { type: String },
     name: {
@@ -54,7 +63,7 @@ module.exports = function(config, mongoose, nodemailer) {
     },
 
     removeContact: function(account, contactId) {
-      if (account.contacts == null) return;
+      if (account.contacts === null) return;
 
       account.contacts.forEach(function(contact) {
         if (contact.accountId == contactId)
@@ -64,10 +73,10 @@ module.exports = function(config, mongoose, nodemailer) {
     },
 
     hasContact: function(account, contactId) {
-      if (account.contacts == null) return false;
+      if (account.contacts === null) return false;
 
       account.contacts.forEach(function(contact) {
-        if (contact.accountId == contactId) return true;
+        if (contact.accountId === contactId) return true;
       });
       return false;
     },
@@ -88,7 +97,7 @@ module.exports = function(config, mongoose, nodemailer) {
 
     forgotPassword: function(email, resetPasswordUrl, callback) {
       this.Model.findOne({ email: email }, function(err, doc) {
-        if (err || doc == null) return callback(false);
+        if (err || doc === null) return callback(false);
 
         resetPasswordUrl += '?account=' + doc._id;
         var message = {
@@ -113,7 +122,7 @@ module.exports = function(config, mongoose, nodemailer) {
         password: hash.update(password).digest('hex')
       };
       this.Model.findOne(conditions, function(err, doc) {
-        callback(doc != null, doc);
+        callback(doc !== null, doc);
       });
     },
 

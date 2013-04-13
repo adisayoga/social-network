@@ -1,6 +1,6 @@
 module.exports = function(app, models) {
   app.get('/account/authenticate', function(req, res) {
-    res.send(req.session.loggedIn ? 200 : 401) // OK/Unauthorized
+    res.send(req.session.loggedIn ? 200 : 401); // OK/Unauthorized
   });
 
   app.post('/register', function(req, res) {
@@ -9,7 +9,7 @@ module.exports = function(app, models) {
     var firstName = req.param('firstName', '');
     var lastName  = req.param('lastName');
 
-    if (email == null || email.length < 8 || password == null || password.length < 6)
+    if (email === null || email.length < 8 || password === null || password.length < 6)
       return res.send(400); // Bad request
 
     models.account.register({
@@ -28,7 +28,7 @@ module.exports = function(app, models) {
     var email    = req.param('email', null);
     var password = req.param('password', null);
 
-    if (email == null || email.length < 8 || password == null || password.length < 6) {
+    if (email === null || email.length < 8 || password === null || password.length < 6) {
       var message = 'Email dan atau password tidak boleh kosong atau terlalu pendek!';
       return res.send(400, message); // Bad request
     }
@@ -41,7 +41,7 @@ module.exports = function(app, models) {
 
       req.session.accountId = account._id;
       req.session.loggedIn = true;
-      res.send(200); // OK
+      res.send(accountId);
     });
   });
 
@@ -50,7 +50,7 @@ module.exports = function(app, models) {
     var resetPasswordUrl = 'http://' + hostname + '/reset-password';
     var email = req.param('email', null);
 
-    if (email == null || email.length < 8) return res.send(400); // Bad request
+    if (email === null || email.length < 8) return res.send(400); // Bad request
 
     models.account.forgotPassword(email, resetPasswordUrl, function(success) {
       res.send(success ? 200: 404); // OK/Not found
@@ -66,7 +66,7 @@ module.exports = function(app, models) {
   app.post('/reset-password', function(req, res) {
     var accountId = req.param('accountId', null);
     var password = req.param('password', null);
-    if (accountId == null || password == null)
+    if (accountId === null || password === null)
       return res.send(400); // Bad request
 
     models.account.changePassword(accountId, password, function(success) {

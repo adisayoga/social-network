@@ -10,7 +10,8 @@ function(router, socket) {
     },
 
     checkLogin: function(callback) {
-      $.get('/account/authenticate', function() {
+      $.get('/account/authenticate', function(data) {
+        router.socketEvents.trigger('app:loggedIn', data);
         callback(true);
       }).error(function() {
         callback(false);
