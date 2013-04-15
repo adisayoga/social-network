@@ -16,6 +16,7 @@ function(ContactView, contactsTemplate) {
 
     renderCollection: function(collection) {
       var self = this;
+      this.$('.contacts-list').empty();
       collection.each(function(contact) {
         var contactView = new ContactView({ removeButton: true, model: contact });
         contactView.render();

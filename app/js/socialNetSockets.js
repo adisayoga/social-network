@@ -10,7 +10,7 @@ function(sio, Contacts, ChatView) {
 
     initialize: function(eventDispatcher) {
       this.eventDispatcher = eventDispatcher;
-      eventDispatcher.bind('app:loggedIn', this.connectSocket, this);
+      eventDispatcher.bind('app:logged_in', this.connectSocket, this);
     },
 
     connectSocket: function(accountId) {
@@ -22,12 +22,12 @@ function(sio, Contacts, ChatView) {
         .on('connect', function() {
           self.eventDispatcher.bind('socket:chat', self.sendChat, self);
 
-          self.socket.on('chatServer', function(data) {
+          self.socket.on('chat_server', function(data) {
             self.eventDispatcher.trigger('socket:chat:start:' + data.from);
             self.eventDispatcher.trigger('socket:chat:in:' + data.from, data);
           });
 
-          self.socket.on('contactEvent', self.handleContactEvent);
+          self.socket.on('contact_event', self.handleContactEvent);
 
           var contacts = new Contacts();
           contacts.url = '/accounts/me/contacts';
@@ -44,6 +44,10 @@ function(sio, Contacts, ChatView) {
         });
     },
 
+    sendChat: function(payload) {
+      if (this.socket !== null) this.socket.emit('chat_client', payload);
+    },
+
     handleContactEvent: function(eventObject) {
       var eventName = '';
       if (eventObject == this.accountId) {
@@ -52,10 +56,6 @@ function(sio, Contacts, ChatView) {
         eventName = eventObject.action + ':' + eventObject.from;
       }
       this.eventDispatcher.trigger(eventName, eventObject);
-    },
-
-    sendChat: function(payload) {
-      if (this.socket !== null) this.socket.emit('chatClient', payload);
     }
   };
 });

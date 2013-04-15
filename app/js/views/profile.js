@@ -40,18 +40,18 @@ function(Status, StatusView, profileTemplate, statusTemplate) {
       return false;
     },
 
-    prependStatus: function(statusModel) {
-      var statusView = new StatusView({ model: statusModel });
-      statusView.render();
-      this.$('.status-list').prepend(statusView.el).hide().fadeIn('slow');
-    },
-
     onSocketStatusAdded: function(data) {
       var newStatus = data.data;
       this.prependStatus(new Status({
         status: newStatus.status,
         name:   newStatus.name
       }));
+    },
+
+    prependStatus: function(statusModel) {
+      var statusView = new StatusView({ model: statusModel });
+      statusView.render();
+      this.$('.status-list').prepend(statusView.el).hide().fadeIn('slow');
     }
 
   });

@@ -16,7 +16,7 @@ function(chatItemTemplate) {
 
       this.socketEvents.bind('socket:chat:start:' + accountId, this.startChatSession, this);
       this.socketEvents.bind('login:' + accountId, this.handleContactLogin, this);
-      this.socketEvents.bind('logout' + accountId, this.handleContactLogout, this);
+      this.socketEvents.bind('logout:' + accountId, this.handleContactLogout, this);
     },
 
     render: function() {
@@ -38,12 +38,12 @@ function(chatItemTemplate) {
     handleContactLogout: function() {
       this.model.set('online', false);
 
-      $onlineIndicator = this.$('.online-indicator');
-      while ($onlineIndicator.hasClass('online'))
-        $onlineIndicator.removeClass('online');
+      // $onlineIndicator = this.$('.online-indicator');
+      // while ($onlineIndicator.hasClass('online'))
+      //   $onlineIndicator.removeClass('online');
 
       // Apa bedanya dengan:
-      // this.$('.online-indicator').removeClass('online');
+      this.$('.online-indicator').removeClass('online');
     }
 
   });

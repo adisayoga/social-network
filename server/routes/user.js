@@ -1,5 +1,5 @@
 module.exports = function(app, models) {
-  app.get('/account/authenticate', function(req, res) {
+  app.get('/account/authenticated', function(req, res) {
     res.send(req.session.loggedIn ? 200 : 401); // OK/Unauthorized
   });
 
@@ -41,7 +41,9 @@ module.exports = function(app, models) {
 
       req.session.accountId = account._id;
       req.session.loggedIn = true;
-      res.send(accountId);
+
+      app.eventEmitter.emit('logged_in', account);
+      res.send(account);
     });
   });
 

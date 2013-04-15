@@ -1,12 +1,12 @@
 module.exports = function(app, models) {
   app.get('/accounts/:id/contacts', function(req, res) {
-    models.account.find(getAccountId(req), function(account) {
+    models.account.find(app.getReqAccountId(req), function(account) {
       res.send(account.contacts);
     });
   });
 
   app.post('/accounts/:id/contact', function(req, res) {
-    var accountId = getAccountId(req);
+    var accountId = app.getReqAccountId(req);
     var contactId = req.param('contactId', null);
 
     // Missing contactId, don't bother going any further
@@ -18,7 +18,6 @@ module.exports = function(app, models) {
         if (!contact) return;
         models.account.addContact(account, contact);
         models.account.addContact(contact, account); // Make the reverse link
-        account.save();
       });
     });
 
@@ -28,7 +27,7 @@ module.exports = function(app, models) {
   });
 
   app.delete('/accounts/:id/contact', function(req, res) {
-    var accountId = getAccountId(req);
+    var accountId = app.getReqAccountId(req);
     var contactId = req.param('contactId', null);
 
     // Missing contactId, don't bother going any further
@@ -57,8 +56,4 @@ module.exports = function(app, models) {
       res.send(accounts);
     });
   });
-};
-
-var getAccountId = function(req) {
-  return (req.params.id == 'me') ? req.session.accountId : req.params.id;
 };
