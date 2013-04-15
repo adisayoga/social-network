@@ -48,7 +48,7 @@ app.io = sio.listen(app.server);
 app.io.configure(function() {
   app.io.set('authorization', function(data, accept) {
     var signedCookies = cookie.parse(data.headers.cookie);
-    var cookies = utils.parseSignedCookies(signedCookies, app.sessionSecret);
+    var cookies = connect.utils.parseSignedCookies(signedCookies, app.sessionSecret);
     data.sessionId = cookies['express.sid'];
 
     data.sessionStore = app.sessionStore;
@@ -63,7 +63,7 @@ app.io.configure(function() {
 
 app.isAccountOnline = function(accountId) {
   var clients = app.io.sockets.clients(accountId);
-  return client.length > 0;
+  return clients.length > 0;
 };
 
 app.getReqAccountId = function(req) {

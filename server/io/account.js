@@ -1,7 +1,7 @@
 module.exports = function(app, models) {
   app.io.on('connection', function(socket) {
     var currentAccount = null;
-    var session = socket.handsake.session;
+    var session = socket.handshake.session;
     var accountId = session.accountId;
 
     // Emit login event
@@ -20,7 +20,7 @@ module.exports = function(app, models) {
       });
       if (subscribedAccounts.indexOf(accountId) === -1) {
         // Subscribe to my own updates
-        app.subscribeToAccount(accountId);
+        subscribeToAccount(accountId);
       }
     });
 
@@ -32,7 +32,7 @@ module.exports = function(app, models) {
       // Unsubscribe from my contacts
       currentAccount.contacts.forEach(function(contact) {
         var eventName = 'event:' + contact.accountId;
-        app.eventEmitter.removeEventListener(eventName, handleContactEvent);
+        app.eventEmitter.removeListener(eventName, handleContactEvent);
         console.log('Unsubscribing from ' + eventName);
       });
     });

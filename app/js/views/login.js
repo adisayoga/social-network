@@ -27,7 +27,7 @@ function(loginTemplate) {
     login: function() {
       var self = this;
       $.post('/login', this.$('form').serialize(), function(data) {
-        self.socketEvents.trigger('app:loggedIn');
+        self.socketEvents.trigger('app:logged_in', data);
         window.location.hash = 'index';
       }).error(function(e) {
         self.$('#login-error').text(e.responseText).hide().fadeIn();

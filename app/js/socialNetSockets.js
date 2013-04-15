@@ -13,9 +13,9 @@ function(sio, Contacts, ChatView) {
       eventDispatcher.bind('app:logged_in', this.connectSocket, this);
     },
 
-    connectSocket: function(accountId) {
+    connectSocket: function(data) {
       var self = this;
-      this.accountId = accountId;
+      this.accountId = data._id;
       this.socket = io.connect();
 
       this.socket
@@ -27,7 +27,9 @@ function(sio, Contacts, ChatView) {
             self.eventDispatcher.trigger('socket:chat:in:' + data.from, data);
           });
 
-          self.socket.on('contact_event', self.handleContactEvent);
+          self.socket.on('contact_event', function() {
+            self.handleContactEvent.apply(self, arguments);
+          });
 
           var contacts = new Contacts();
           contacts.url = '/accounts/me/contacts';
@@ -50,7 +52,7 @@ function(sio, Contacts, ChatView) {
 
     handleContactEvent: function(eventObject) {
       var eventName = '';
-      if (eventObject == this.accountId) {
+      if (eventObject.from === this.accountId) {
         eventName = eventObject.action + ':me';
       } else {
         eventName = eventObject.action + ':' + eventObject.from;

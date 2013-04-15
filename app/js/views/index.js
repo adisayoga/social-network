@@ -49,7 +49,6 @@ function(Status, StatusView, indexTemplate) {
 
     updateStatus: function() {
       var statusText = this.$('#status').val();
-      var statusCollection = this.collection;
       $.post('/accounts/me/status', { status: statusText });
       this.$('#status').val('');
       return false;
