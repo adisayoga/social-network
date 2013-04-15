@@ -1,6 +1,10 @@
 module.exports = function(app, models) {
   app.get('/account/authenticated', function(req, res) {
-    res.send(req.session.loggedIn ? 200 : 401); // OK/Unauthorized
+    if (req.session && req.session.loggedIn) {
+      res.send(req.session.accountId);
+    } else {
+      res.send(401); // Unauthorized
+    }
   });
 
   app.post('/register', function(req, res) {
@@ -43,7 +47,7 @@ module.exports = function(app, models) {
       req.session.loggedIn = true;
 
       app.eventEmitter.emit('logged_in', account);
-      res.send(account);
+      res.send(account._id);
     });
   });
 

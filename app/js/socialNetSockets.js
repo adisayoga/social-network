@@ -13,9 +13,10 @@ function(sio, Contacts, ChatView) {
       eventDispatcher.bind('app:logged_in', this.connectSocket, this);
     },
 
-    connectSocket: function(data) {
+    connectSocket: function(accountId) {
+      console.log(accountId);
       var self = this;
-      this.accountId = data._id;
+      this.accountId = accountId;
       this.socket = io.connect();
 
       this.socket
