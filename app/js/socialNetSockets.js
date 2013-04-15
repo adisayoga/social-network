@@ -14,7 +14,6 @@ function(sio, Contacts, ChatView) {
     },
 
     connectSocket: function(accountId) {
-      console.log(accountId);
       var self = this;
       this.accountId = accountId;
       this.socket = io.connect();

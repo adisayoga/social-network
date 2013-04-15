@@ -14,8 +14,8 @@ div, span, input, select, textarea { box-sizing: border-box; }
   background-color: whitesmoke; min-height: 285px;
   margin: 0;
 }
+.chat-list li { padding: 10px; cursor: pointer; }
 .chat-list li:hover { background-color: #18B2EE; }
-.chat-list span { display: block; padding: 10px; cursor: pointer; }
 
 .chat-session {
   float: left; width: 250px; position: relative; height: 285px;
@@ -28,5 +28,6 @@ div, span, input, select, textarea { box-sizing: border-box; }
 .online-indicator {
   float: left; width: 15px; height: 16px;
   background-image: url('../img/traffic-light.png');
+  margin-top: 3px; margin-right: 5px;
 }
 .online-indicator.online { background-position: -15px 0; }
